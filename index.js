@@ -14,7 +14,7 @@ const http = require('http').Server(app);
 
 const io = require("socket.io")(http, {
   cors: {
-    origin: "*",
+    origin: "https://chipper-beijinho-037517.netlify.app",
     methods: ["GET", "POST"]
   }
 });
