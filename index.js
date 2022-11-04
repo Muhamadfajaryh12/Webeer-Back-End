@@ -18,6 +18,7 @@ const io = require("socket.io")(http, {
     methods: ["GET", "POST"]
   }
 });
+app.use(cors());
 //create a logger
 const logger = winston.createLogger({
   level: 'info',
