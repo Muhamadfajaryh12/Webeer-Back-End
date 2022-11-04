@@ -12,13 +12,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 const http = require('http').Server(app);
 
-const io = require("socket.io")(http, {
-  cors: {
-    origin: "https://chipper-beijinho-037517.netlify.app",
-    methods: ["GET", "POST"]
-  }
-});
-app.use(cors());
+// const io = require("socket.io")(http, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"]
+//   }
+// });
 //create a logger
 const logger = winston.createLogger({
   level: 'info',
