@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const winston = require('winston');
 const app = express();
+const cors = require('cors')
 require("dotenv").config();
 const jobsRoute = require('./routes/jobs');
 
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(cors())
 const http = require('http').Server(app);
 
 // const io = require("socket.io")(http, {
