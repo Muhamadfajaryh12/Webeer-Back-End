@@ -10,8 +10,14 @@ const PORT = process.env.PORT || 3000;
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+const http = require('http').Server(app);
 
-
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 //create a logger
 const logger = winston.createLogger({
   level: 'info',
