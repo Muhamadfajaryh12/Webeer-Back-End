@@ -4,10 +4,11 @@ const {
     createJob,
     getJob,
     getJobDetail,
-    getJobName
+    getJobName,
+    uploadImg,
 } = require("../controller/jobController");
 const asyncHandler = require("../utils/asyncHandler");
-router.route("/").post(asyncHandler(createJob));
+router.route("/").post(uploadImg,asyncHandler(createJob));
 router.route("/all").get(asyncHandler(getJob));
 router.route("/detail/:id").get(asyncHandler(getJobDetail));
 router.route("/").get(asyncHandler(getJobName));
