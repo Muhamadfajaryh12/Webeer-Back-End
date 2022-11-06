@@ -27,7 +27,7 @@ const getJob =async(req,res)=>{
     const job = await Job.find();
     res.json({
         success: true,
-        t: job,
+        data:job,
       });
 }
 
@@ -49,7 +49,7 @@ const getJobName= async(req,res)=>{
         const job = await Job.find();
         res.json({
             success:true,
-            ser:job.filter((job)=>job.pekerjaan.toLowerCase().includes(pekerjaan.toLowerCase()))
+            data:job.filter((job)=>job.pekerjaan.toLowerCase().includes(pekerjaan.toLowerCase()))
             .map((job)=>({
             _id:job.id,
             perusahaan:job.perusahaan,
