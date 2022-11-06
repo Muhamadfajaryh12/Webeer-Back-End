@@ -6,10 +6,12 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 const jobs = require("./routes/jobRouter");
-const users = require("./routes/userRouter")
+const users = require("./routes/userRouter");
+const discussions = require("./routes/discussionRouter");
 app.use(express.json());
-app.use(`${baseURL}/jobs`,jobs)
-app.use(`${baseURL}/users`,users)
+app.use(`${baseURL}/jobs`,jobs);
+app.use(`${baseURL}/users`,users);
+app.use(`${baseURL}/discussions`, discussions);
 app.use(cors())
 app.listen(PORT,()=>{
     console.log(`Server Started at PORT ${PORT}`)
