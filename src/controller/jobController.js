@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Job = require('../models/job.js');
+const { nanoid } = require('nanoid');
 
 const createJob = async(req,res) =>{
+    const id = nanoid(16);
     const {
         perusahaan,
         pekerjaan,
@@ -9,6 +11,7 @@ const createJob = async(req,res) =>{
     } = req.body
 
     const newJob = new Job({
+        id,
         perusahaan,
         pekerjaan,
         deskripsi
@@ -27,7 +30,21 @@ const getJob =async(req,res)=>{
         data: job,
       });
 }
+
+const getJobDetail = async(req,res)=>{
+    const id = req.params.id;
+
+    const job = await Job.findOne({
+        _id:id,
+    }).exec();
+    
+    res.json({
+        success: true,
+        data: job,
+      });
+}
 module.exports = {
     createJob,
     getJob,
+    getJobDetail,
 }
