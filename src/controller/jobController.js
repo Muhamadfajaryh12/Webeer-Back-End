@@ -70,7 +70,8 @@ const getJobName= async(req,res)=>{
             .map((job)=>({
             _id:job.id,
             perusahaan:job.perusahaan,
-            pekerjaan:job.pekerjaan
+            pekerjaan:job.pekerjaan,
+            image:job.image
             }))
         })  
     }
