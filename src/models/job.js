@@ -40,34 +40,7 @@ const JobSchema =new mongoose.Schema({
         },
         kualifikasi:{
             name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
-            },
-            name:{
-                type:String
+                type:[]
             }
         },
         link:{

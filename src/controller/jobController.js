@@ -46,7 +46,9 @@ const createJob = async(req,res) =>{
         gaji,
         waktu,
         kondisiKerja,
-        name,
+        kualifikasi:{
+            name,
+        },
         link,
         },
         image:productImg
