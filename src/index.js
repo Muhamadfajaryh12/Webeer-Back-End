@@ -8,10 +8,10 @@ const app = express();
 const jobs = require("./routes/jobRouter");
 const users = require("./routes/userRouter");
 const discussions = require("./routes/discussionRouter");
-const categories = require('./routes/discussionCategory');
-const reply = require('./routes/discussionReply');
+const categories = require('./routes/discussionCategoryRouter');
+const reply = require('./routes/discussionReplyRouter');
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 app.use(`${baseURL}/jobs`,jobs);
 app.use(`${baseURL}/users`,users);
 app.use(`${baseURL}/discussions`, discussions);

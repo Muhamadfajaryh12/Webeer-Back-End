@@ -34,5 +34,16 @@ const DiscussionSchema =new mongoose.Schema({
         required: true
     }
 });
+
+DiscussionSchema.methods.toJSON = function() {
+    const discussions = this.toObject();
+
+    const {_id, ...rest} = discussions;
+
+    return {
+        _id,
+        ...rest
+    }
+}
 const Discussion = new mongoose.model('Discussion', DiscussionSchema);
 module.exports = Discussion;

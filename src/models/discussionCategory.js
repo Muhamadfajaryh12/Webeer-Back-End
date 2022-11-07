@@ -9,7 +9,7 @@ const DiscussionCategorySchema = new Schema(
         discussion: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'Discussion'
+                ref: 'discussion'
             }
         ]
     }
@@ -22,7 +22,7 @@ DiscussionCategorySchema.methods.toJSON = function() {
 
     return {
         name,
-        id: _id,
+        _id,
     }
 }
 
