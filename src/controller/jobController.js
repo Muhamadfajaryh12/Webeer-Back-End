@@ -18,8 +18,8 @@ const storage = new CloudinaryStorage({
   const uploadImg = multer({storage: storage}).single('image');
 const createJob = async(req,res) =>{
     const id = nanoid(16);
-    // const { filename: image } = req.file;
-    // const productImg = cloudinary.url(`${image}.webp`, { width: 700, height: 600, crop: 'scale', quality: 70 });
+    const { filename: image } = req.file;
+    const productImg = cloudinary.url(`${image}.webp`, { width: 700, height: 600, crop: 'scale', quality: 70 });
     const {
         perusahaan,
         pekerjaan,
@@ -48,11 +48,11 @@ const createJob = async(req,res) =>{
         kondisiKerja,
         link,
         },
+        image:productImg,
         kualifikasi:[{
             test
         }],
     });
-    // image:productImg,
 
     const job = await newJob.save();
     res.status(201).json({
