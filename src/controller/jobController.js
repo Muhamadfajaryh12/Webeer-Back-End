@@ -23,14 +23,32 @@ const createJob = async(req,res) =>{
     const {
         perusahaan,
         pekerjaan,
-        deskripsi,
+        tempat,
+        deskripsiPerusahaan,
+        deskripsiPekerjaan,
+        level,
+        gaji,
+        waktu,
+        kondisiKerja,
+        name,
+        link
     } = req.body
 
     const newJob = new Job({
         id,
         perusahaan,
         pekerjaan,
-        deskripsi,
+        tempat,
+        detail:{
+        deskripsiPerusahaan,
+        deskripsiPekerjaan,
+        level,
+        gaji,
+        waktu,
+        kondisiKerja,
+        name,
+        link,
+        },
         image:productImg
     });
 

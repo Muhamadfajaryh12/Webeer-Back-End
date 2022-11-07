@@ -9,13 +9,77 @@ const JobSchema =new mongoose.Schema({
         type:String,
         required:true,
     },
-    deskripsi:{
+    tempat:{
         type:String,
-        required:true
+        required:true,
+    },
+    detail:{
+        deskripsiPerusahaan:{
+            type:String,
+            required:true,
+        },
+        deskripsiPekerjaan:{
+            type:String,
+            required:true,
+        },
+        level:{
+            type:String,
+            required:true,
+        },
+        gaji:{
+            type:String,
+            required:true,
+        },
+        waktu:{
+            type:String,
+            required:true,
+        },
+        kondisiKerja:{
+            type:String,
+            required:true,
+        },
+        kualifikasi:{
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            },
+            name:{
+                type:String
+            }
+        },
+        link:{
+            type:String,
+            required:true
+        }
     },
     image:{
         type: String
-      }
-})
+      },
+    },
+{ timestamps: true }
+)
 const Job = new mongoose.model("Job",JobSchema);
 module.exports = Job;
