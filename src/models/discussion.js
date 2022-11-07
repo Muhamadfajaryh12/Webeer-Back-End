@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const DiscussionSchema =new mongoose.Schema({
     name: {
         type: String,
-        ref: "user",
+        ref: 'User',
     },
     date: {
         type: String,
@@ -16,7 +16,7 @@ const DiscussionSchema =new mongoose.Schema({
     categories: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'discussionCategory'
+            ref: 'DiscussionCategory'
         }
     ],
     discussion: {
@@ -25,16 +25,8 @@ const DiscussionSchema =new mongoose.Schema({
     },
     reply: [
         {
-            user_name_reply: {
-                type: String,
-                ref: "user"
-            },
-            date: {
-                type: String,
-            },
-            reply: {
-                type: String,
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'DiscussionReply'
         }
     ],
     isSolved: {
@@ -42,5 +34,5 @@ const DiscussionSchema =new mongoose.Schema({
         required: true
     }
 });
-const Discussion = new mongoose.model("Discussion", DiscussionSchema);
+const Discussion = new mongoose.model('Discussion', DiscussionSchema);
 module.exports = Discussion;

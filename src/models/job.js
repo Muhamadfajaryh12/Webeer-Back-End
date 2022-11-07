@@ -12,7 +12,10 @@ const JobSchema =new mongoose.Schema({
     deskripsi:{
         type:String,
         required:true
-    }
+    },
+    image:{
+        type: String
+      }
 })
 const Job = new mongoose.model("Job",JobSchema);
 module.exports = Job;

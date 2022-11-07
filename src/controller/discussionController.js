@@ -1,17 +1,16 @@
-const mongoose = require('mongoose');
 const Discussion = require('../models/discussion.js');
 
 const createDiscussion = async(req,res) =>{
     const {
         name,
         title,
-        categories,
         discussion,
     } = req.body
 
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
+    const categories =[];
     const reply = [];
     const isSolved = false;
 
@@ -42,8 +41,20 @@ const getDiscussion = async(req, res) => {
 
 const deleteDiscussion = async(req, res) => {
     const {id} = req.params;
+
+    const discuss = await Discussion.findOneAndDelete({
+        _id: id
+    })
+
+    if(discuss) {
+        res.send({
+            success: true,
+            message: 'Delete Successfully'
+        })
+    }
 }
 module.exports = {
     createDiscussion,
     getDiscussion,
+    deleteDiscussion
 }

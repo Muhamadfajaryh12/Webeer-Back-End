@@ -5,14 +5,20 @@ const DiscussionCategorySchema = new Schema(
         name: {
             type: String,
             required: true
-        }
+        },
+        discussion: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Discussion'
+            }
+        ]
     }
 );
 
 DiscussionCategorySchema.methods.toJSON = function() {
-    const discussion = this;
+    const userdiscussion = this;
 
-    const {name, _id} = discussion;
+    const {name, _id} = userdiscussion;
 
     return {
         name,
@@ -20,5 +26,5 @@ DiscussionCategorySchema.methods.toJSON = function() {
     }
 }
 
-const DiscussionCategory = model('discussionCategory', DiscussionCategorySchema);
+const DiscussionCategory = model('DiscussionCategory', DiscussionCategorySchema);
 module.exports = DiscussionCategory;

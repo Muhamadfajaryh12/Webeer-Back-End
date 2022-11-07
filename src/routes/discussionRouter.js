@@ -6,5 +6,5 @@ const {
 } = require("../controller/discussionController");
 const asyncHandler = require("../utils/asyncHandler");
 router.route("/").post(asyncHandler(createDiscussion));
-router.route("/all").get(asyncHandler(getDiscussion))
+router.route("/").get(asyncHandler(getDiscussion))
 module.exports = router;
