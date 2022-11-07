@@ -31,12 +31,25 @@ const createDiscussion = async(req,res) =>{
       });
 }
 
-const getDiscussion = async(req, res) => {
+const getAllDiscussion = async(req, res) => {
     const discuss = await Discussion.find();
     res.json({
         success: true,
         data: discuss,
       });
+}
+
+const getDiscussion = async(req, res) => {
+    const { id } = req.params;
+
+    const discussion = await Discussion.findOne({
+        _id: id
+    }).populate('discussion');
+
+    res.json({
+        success: true,
+        data: discussion
+    })
 }
 
 const deleteDiscussion = async(req, res) => {
@@ -55,6 +68,7 @@ const deleteDiscussion = async(req, res) => {
 }
 module.exports = {
     createDiscussion,
+    getAllDiscussion,
     getDiscussion,
     deleteDiscussion
 }
