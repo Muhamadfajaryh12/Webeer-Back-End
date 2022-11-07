@@ -38,11 +38,6 @@ const JobSchema =new mongoose.Schema({
             type:String,
             required:true,
         },
-        kualifikasi:{
-            name:{
-                type:[]
-            }
-        },
         link:{
             type:String,
             required:true
@@ -51,6 +46,13 @@ const JobSchema =new mongoose.Schema({
     image:{
         type: String
       },
+      kualifikasi:[{
+        test:{
+         type:String,
+         required:true
+         },
+        },
+        ],
     },
 { timestamps: true }
 )
