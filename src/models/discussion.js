@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const DiscussionSchema =new mongoose.Schema({
     name: {
         type: String,
-        ref: 'User',
+        ref: 'user',
     },
     date: {
         type: String,
-        required: true,
+        required: true
     },
     title: {
         type: String,
@@ -16,7 +16,7 @@ const DiscussionSchema =new mongoose.Schema({
     categories: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'DiscussionCategory'
+            ref: 'discussioncategory'
         }
     ],
     discussion: {
@@ -26,7 +26,7 @@ const DiscussionSchema =new mongoose.Schema({
     reply: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'DiscussionReply'
+            ref: 'discussionreply'
         }
     ],
     isSolved: {
@@ -35,15 +35,15 @@ const DiscussionSchema =new mongoose.Schema({
     }
 });
 
-DiscussionSchema.methods.toJSON = function() {
-    const discussions = this.toObject();
+// DiscussionSchema.methods.toJSON = function() {
+//     const discussions = this.toObject();
 
-    const {_id, ...rest} = discussions;
+//     const {_id, ...rest} = discussions;
 
-    return {
-        _id,
-        ...rest
-    }
-}
-const Discussion = new mongoose.model('Discussion', DiscussionSchema);
+//     return {
+//         _id,
+//         ...rest
+//     }
+// }
+const Discussion = new mongoose.model('discussion', DiscussionSchema);
 module.exports = Discussion;

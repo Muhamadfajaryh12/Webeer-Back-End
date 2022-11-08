@@ -1,7 +1,11 @@
+const { ObjectId } = require('mongodb');
+const Discussion = require('../models/discussion.js');
 const DiscussionReply = require('../models/discussionReply.js');
 
 const createReply = async(req,res) =>{
     const { id } = req.params;
+    const replyID = new ObjectId();
+
     const {
         user_name_reply,
         reply,
@@ -11,19 +15,25 @@ const createReply = async(req,res) =>{
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
     const time = newDate.getTime();
-
+    
+    const discussion = await Discussion.findOne({
+        _id: id
+    });
+    
     const newReply = new DiscussionReply({
+        _id: replyID,
         user_name_reply,
         date,
         reply,
         discussionId: id,
         time: time
     });
-
     
     const userReply = await newReply.save();
-    // discussions.reply.push()
-    // await discussions.save();
+    
+    discussion.reply.push(replyID);
+    await discussion.save();
+    
     res.status(201).json({
         success: true,
         data: userReply,
@@ -35,7 +45,7 @@ const getDiscussionReply = async(req, res) => {
 
     const userReply = await DiscussionReply.find({
         discussionId: id
-    });
+    }).populate('discussionReply');
 
     res.json({
         success: true,
