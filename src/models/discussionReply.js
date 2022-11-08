@@ -1,10 +1,10 @@
-const { Schema, model } = require("mongoose");
+const mongoose = require('mongoose');
 
-const DiscussionReplySchema = new Schema(
+const DiscussionReplySchema = new mongoose.Schema(
     {
         user_name_reply: {
             type: String,
-            ref: 'User'
+            ref: 'user'
         },
         date: {
             type: String,
@@ -15,7 +15,7 @@ const DiscussionReplySchema = new Schema(
             required: true
         },
         discussionId: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'discussion'
         },
         time: {
@@ -39,5 +39,5 @@ DiscussionReplySchema.methods.toJSON = function() {
     }
 }
 
-const DiscussionReply = model('DiscussionReply', DiscussionReplySchema);
+const DiscussionReply = new mongoose.model('discussionreply', DiscussionReplySchema);
 module.exports = DiscussionReply;
