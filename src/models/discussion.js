@@ -15,7 +15,7 @@ const DiscussionSchema =new mongoose.Schema({
     },
     categories: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Object,
             ref: 'discussioncategory'
         }
     ],
