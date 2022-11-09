@@ -1,24 +1,24 @@
 const mongoose = require('mongoose');
 
 const JobSchema =new mongoose.Schema({
-    perusahaan:{
+    company:{
         type:String,
         required:true,
     },
-    pekerjaan:{
+    profession:{
         type:String,
         required:true,
     },
-    tempat:{
+    address:{
         type:String,
         required:true,
     },
-    detail:{
-        deskripsiPerusahaan:{
+    details:{
+        descriptionCompany:{
             type:String,
             required:true,
         },
-        deskripsiPekerjaan:{
+        descriptionProfession:{
             type:String,
             required:true,
         },
@@ -26,33 +26,31 @@ const JobSchema =new mongoose.Schema({
             type:String,
             required:true,
         },
-        gaji:{
+        salary:{
             type:String,
             required:true,
         },
-        waktu:{
+        timeWork:{
             type:String,
             required:true,
         },
-        kondisiKerja:{
+        workplace:{
             type:String,
             required:true,
         },
         link:{
             type:String,
             required:true
+        },
+        qualification:{
+            type:Array,
+            required:true
         }
+          
     },
     image:{
         type: String
       },
-      kualifikasi:[{
-        test:{
-         type:String,
-         required:true
-         },
-        },
-        ],
     },
 { timestamps: true }
 )

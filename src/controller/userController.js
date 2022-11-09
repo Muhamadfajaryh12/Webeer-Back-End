@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose');
 const User = require('../models/user.js');
-
+const upload = require('multer')();
 const createUser = async(req,res)=>{
     const{
         email,

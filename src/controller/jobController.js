@@ -21,37 +21,35 @@ const createJob = async(req,res) =>{
     const { filename: image } = req.file;
     const productImg = cloudinary.url(`${image}.webp`, { width: 700, height: 600, crop: 'scale', quality: 70 });
     const {
-        perusahaan,
-        pekerjaan,
-        tempat,
-        deskripsiPerusahaan,
-        deskripsiPekerjaan,
+        company,
+        profession,
+        address,
+        descriptionCompany,
+        descriptionProfession,
         level,
-        gaji,
-        waktu,
-        kondisiKerja,
-        test,
+        salary,
+        timeWork,
+        workplace,
+        qualification,
         link
     } = req.body
 
     const newJob = new Job({
         id,
-        perusahaan,
-        pekerjaan,
-        tempat,
-        detail:{
-        deskripsiPerusahaan,
-        deskripsiPekerjaan,
+        company,
+        profession,
+        address,
+        details:{
+        descriptionCompany,
+        descriptionProfession,
         level,
-        gaji,
-        waktu,
-        kondisiKerja,
+        salary,
+        timeWork,
+        workplace,
         link,
+        qualification
         },
         image:productImg,
-        kualifikasi:[{
-            test
-        }],
     });
 
     const job = await newJob.save();
@@ -81,16 +79,16 @@ const getJobDetail = async(req,res)=>{
       });
 }
 const getJobName= async(req,res)=>{
-    const {pekerjaan} = req.query;
-    if (pekerjaan){
+    const {profession} = req.query;
+    if (profession){
         const job = await Job.find();
         res.json({
             success:true,
-            data:job.filter((job)=>job.pekerjaan.toLowerCase().includes(pekerjaan.toLowerCase()))
+            data:job.filter((job)=>job.profession.toLowerCase().includes(profession.toLowerCase()))
             .map((job)=>({
             _id:job.id,
-            perusahaan:job.perusahaan,
-            pekerjaan:job.pekerjaan,
+            company:job.company,
+            profession:job.profession,
             image:job.image
             }))
         })  
