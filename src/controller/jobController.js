@@ -89,7 +89,9 @@ const getJobName= async(req,res)=>{
             _id:job.id,
             company:job.company,
             profession:job.profession,
-            image:job.image
+            image:job.image,
+            createdAt:job.createdAt,
+            address:job.address
             }))
         })  
     }
