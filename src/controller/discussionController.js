@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const Discussion = require('../models/discussion.js');
 
 const createDiscussion = async(req,res) =>{
@@ -6,12 +5,12 @@ const createDiscussion = async(req,res) =>{
         name,
         title,
         discussion,
-    } = req.body;
+    } = req.body
 
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
-    const categories = [];
+    const categories =[];
     const reply = [];
     const isSolved = false;
 

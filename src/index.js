@@ -12,6 +12,7 @@ const categories = require('./routes/discussionCategoryRouter');
 const reply = require('./routes/discussionReplyRouter');
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({extended: true})) 
 app.use(`${baseURL}/jobs`,jobs);
 app.use(`${baseURL}/users`,users);
 app.use(`${baseURL}/discussions`, discussions);
