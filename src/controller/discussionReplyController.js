@@ -14,7 +14,6 @@ const createReply = async(req,res) =>{
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
-    const time = newDate.getTime();
     
     const discussion = await Discussion.findOne({
         _id: id
@@ -25,8 +24,7 @@ const createReply = async(req,res) =>{
         user_name_reply,
         date,
         reply,
-        discussionId: id,
-        time: time
+        discussionId: id
     });
     
     const userReply = await newReply.save();
@@ -45,7 +43,7 @@ const getDiscussionReply = async(req, res) => {
 
     const userReply = await DiscussionReply.find({
         discussionId: id
-    }).populate('discussionReply');
+    });
 
     res.json({
         success: true,
@@ -53,31 +51,24 @@ const getDiscussionReply = async(req, res) => {
       });
 }
 
-// const updateReply = async(req, res) => {
-//     const { id } = req.params;
-
-//     const {
-//         user_name_reply,
-//         reply,
-//     } = req.body;
-
-//     const userReply = await DiscussionReply.findByIdAndUpdate({
-//         user_name_reply,
-//         reply
-//     })
-
-//     res.json({
-//         success: true,
-//         data: userReply
-//     })
-// }
-
 const deleteReply = async(req, res) => {
     const { id } = req.params;
 
     const reply = await DiscussionReply.findOneAndDelete({
         _id: id
-    })
+    });
+
+    const discussion = await Discussion.findOne({
+        reply: id
+    });
+
+    const index = discussion.reply.findIndex((replyId) => replyId.toString() === id);
+
+    if (index !== -1) {
+        discussion.reply.splice(index, 1);
+    }
+
+    await discussion.save();
     
     if(reply) {
         res.send({
@@ -89,6 +80,5 @@ const deleteReply = async(req, res) => {
 module.exports = {
     createReply,
     getDiscussionReply,
-    // updateReply,
     deleteReply
 }

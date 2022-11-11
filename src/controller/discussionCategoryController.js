@@ -1,48 +1,27 @@
-const { ObjectId } = require("mongodb")
-const Discussion = require("../models/discussion")
-const Category = require("../models/discussionCategory")
+const Category = require("../models/discussionCategory");
 
 const createCategory = async (req, res, next) => {
-    const { id } = req.params;
-    const categoryID = new ObjectId();
-
-    const{
+    const {
         name
     } = req.body
 
     const isExist = await Category.findOne({
-        name: name
-    });
-    
-    const discussion = await Discussion.findOne({
-        _id: id
+        name: name.toLowerCase()
     });
     
     if(isExist !== null) {
-        const exist = (name.toLowerCase() === isExist.name.toLowerCase());
-        if (exist) {
-            isExist.discussions.push(id);
-            discussion.categories.push(isExist._id);
-    
-            await isExist.save();
-            await discussion.save();
-    
-            res.status(201).json({
-                success: true,
-                data: isExist
-            });
-        }
+        res.status(400).json({
+            success: false,
+            message: 'Kategori tersebut sudah ada'
+        });
     } else {
+        const discussions = [];
         const newCategory = new Category({
-            _id: categoryID,
-            name,
-            discussions: id
+            name: name.toLowerCase(),
+            discussions
         });
 
         const category = await newCategory.save();
-        
-        discussion.categories.push(categoryID);
-        await discussion.save()
         
         res.status(201).json({
             success: true,
@@ -52,16 +31,45 @@ const createCategory = async (req, res, next) => {
 
 }
 
-const getCategories = async (req, res, next) => {
-    const categories = await Category.find();
-
+const getAllCategory = async(req, res) => {
+    const discuss = await Category.find();
     res.json({
         success: true,
-        data: categories
+        data: discuss,
+      });
+}
+
+const getCategory = async (req, res, next) => {
+    const { id } = req.params;
+
+    const category = await Category.findOne({
+        _id: id
+    })
+    
+    res.status(201).json({
+        success: true,
+        data: category
+    })
+}
+
+const deleteCategory = async (req, res, next) => {
+    const { id } = req.params;
+
+    const category = await Category.findOneAndDelete({
+        _id: id
     });
-};
+
+    if(category) {
+        res.status(201).json({
+            success: true,
+            message: 'Data berhasil dihapus'
+        })
+    }
+}
 
 module.exports = {
     createCategory,
-    getCategories
+    getAllCategory,
+    getCategory,
+    deleteCategory
 };

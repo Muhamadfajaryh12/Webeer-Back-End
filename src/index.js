@@ -8,7 +8,7 @@ const app = express();
 const jobs = require("./routes/jobRouter");
 const users = require("./routes/userRouter");
 const discussions = require("./routes/discussionRouter");
-const categories = require('./routes/discussionCategoryRouter');
+const category = require('./routes/discussionCategoryRouter');
 const reply = require('./routes/discussionReplyRouter');
 app.use(express.json());
 app.use(cors());
@@ -16,8 +16,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(`${baseURL}/jobs`,jobs);
 app.use(`${baseURL}/users`,users);
 app.use(`${baseURL}/discussions`, discussions);
-app.use(`${baseURL}/categories`, categories);
-app.use(`${baseURL}/reply`, reply);
+app.use(`${baseURL}/discussionscategory`, category);
+app.use(`${baseURL}/discussionsreply`, reply);
 app.listen(PORT,()=>{
     console.log(`Server Started at PORT ${PORT}`)
 })
