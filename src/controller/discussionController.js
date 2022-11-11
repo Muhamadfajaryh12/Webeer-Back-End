@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 const { ObjectId } = require('mongodb');
-=======
->>>>>>> 61ca04fce3e76e4711951db470b5f0ca01ad9161
 const Discussion = require('../models/discussion.js');
 const Category = require('../models/discussionCategory.js');
 const DiscussionReply = require('../models/discussionReply.js');
@@ -12,20 +9,12 @@ const createDiscussion = async(req,res) =>{
         name,
         title,
         discussion,
-<<<<<<< HEAD
         categories
     } = req.body;
-=======
-    } = req.body
->>>>>>> 61ca04fce3e76e4711951db470b5f0ca01ad9161
 
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
-<<<<<<< HEAD
-=======
-    const categories =[];
->>>>>>> 61ca04fce3e76e4711951db470b5f0ca01ad9161
     const reply = [];
     const isSolved = false;
     if(typeof(categories) === 'object') {
