@@ -3,9 +3,12 @@ const router = express.Router();
 const upload = require('multer')()
 const {
     createUser,
-    getUser
+    getUser,
+    Login
 } = require("../controller/userController");
 const asyncHandler = require("../utils/asyncHandler");
-router.route("/").post(upload.any(),asyncHandler(createUser));
-router.route("/all").get(asyncHandler(getUser))
+router.route("/register").post(upload.any(),asyncHandler(createUser));
+router.route("/login").post(upload.any(),asyncHandler(Login));
+router.route("/").get(asyncHandler(getUser))
+
 module.exports = router;
