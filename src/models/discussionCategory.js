@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const DiscussionCategorySchema = new Schema(
     {
@@ -15,16 +15,5 @@ const DiscussionCategorySchema = new Schema(
     }
 );
 
-DiscussionCategorySchema.methods.toJSON = function() {
-    const userdiscussion = this;
-
-    const {name, _id} = userdiscussion;
-
-    return {
-        name,
-        _id,
-    }
-}
-
-const DiscussionCategory = model('discussioncategory', DiscussionCategorySchema);
+const DiscussionCategory = new model('discussioncategory', DiscussionCategorySchema);
 module.exports = DiscussionCategory;
