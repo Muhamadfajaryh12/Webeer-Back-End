@@ -8,6 +8,13 @@ const UserSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
+    },
+    role:{
+        type:String,
+        required:true,
+    },
+    isVerify:{
+        type:Boolean,
     }
 })
 const User = new mongoose.model("User",UserSchema);

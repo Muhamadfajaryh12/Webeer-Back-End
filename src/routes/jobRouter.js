@@ -8,7 +8,8 @@ const {
     uploadImg,
 } = require("../controller/jobController");
 const asyncHandler = require("../utils/asyncHandler");
-router.route("/").post(uploadImg,asyncHandler(createJob));
+const verifyToken = require('../middleware/auth')
+router.route("/").post(verifyToken,uploadImg,asyncHandler(createJob));
 router.route("/all").get(asyncHandler(getJob));
 router.route("/detail/:id").get(asyncHandler(getJobDetail));
 router.route("/").get(asyncHandler(getJobName));
