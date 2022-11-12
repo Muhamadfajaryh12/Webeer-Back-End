@@ -15,6 +15,9 @@ const UserSchema = new mongoose.Schema({
     },
     isVerify:{
         type:Boolean,
+    },
+    token:{
+        type:String
     }
 })
 const User = new mongoose.model("User",UserSchema);

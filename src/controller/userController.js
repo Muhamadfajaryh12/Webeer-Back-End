@@ -31,7 +31,9 @@ const createUser = async(req,res)=>
     const user = await newUser.save();
     res.status(201).json({
         success:true,
-        data:user,
+        data:{
+          user:  user,
+        }
     });
 }
 //Login
@@ -41,30 +43,50 @@ const Login = async(req,res)=>{
         password,
         } = req.body
 
-    const emailUser = await User.findOne({email:email})
-    if(!emailUser){
+    const user = await User.findOne({email:email})
+    if(!user){
         return res.status(400).json({
-            message:'Email anda salah',
-            success:false
+            message:'Login Gagal, Email anda salah',
+            error:true
         })
     }
-    const passwordUser = await bcrypt.compare(password,emailUser.password)
+    const passwordUser = await bcrypt.compare(password,user.password)
     if(!passwordUser){
         return res.status(400).json({
-            message:'Password anda salah',
-            success:false
+            message:'Login Gagal, Password anda salah',
+            error:true
         })
     }
     
-    const generateToken = jwt.sign({ _id:emailUser._id}, process.env.SECRET_KEY)
-    res.header('auth',generateToken).json({
+    const generateToken = jwt.sign({ _id:user._id}, process.env.SECRET_KEY)
+    res.header('auth',generateToken)
+    user.token=generateToken
+    return res.json({
         token:generateToken,
+        user:user,
         message:'Login Berhasil',
     })
 
 
     }
+    //logout
+const Logout = async(req,res)=>{
+    const user = req.user;
+    const token = req.token;
+    if (user.token !==token){
+        res.json({
+            error:true,
+            message:"Terjadi Kesalahan",
+        })
+    }
+    res.json({
+    success: true,
+    message:"Anda Berhasil Logout"
+    });
 
+
+    
+  }
 const getUser = async (req,res)=>{
     const user = await User.find();
     res.status(200).json({
@@ -76,5 +98,6 @@ const getUser = async (req,res)=>{
 module.exports = {
     createUser,
     getUser,
-    Login
+    Login,
+    Logout
 }
