@@ -2,16 +2,20 @@ const { ObjectId } = require('mongodb');
 const Discussion = require('../models/discussion.js');
 const Category = require('../models/discussionCategory.js');
 const DiscussionReply = require('../models/discussionReply.js');
+const User = require('../models/user.js');
 
 const createDiscussion = async(req,res) =>{
+    const user = req.user;
     const discussionID = new ObjectId();
     const {
-        name,
         title,
         discussion,
         categories
     } = req.body;
 
+    const nameuser = await User.findOne({
+        _id: user
+    })
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
@@ -41,7 +45,7 @@ const createDiscussion = async(req,res) =>{
 
     const newDiscussion = new Discussion({
         _id: discussionID,
-        name,
+        name: nameuser.email,
         date,
         title,
         categories,
@@ -81,6 +85,7 @@ const getDiscussion = async(req, res) => {
 
 const editDiscussion = async(req, res, next) => {
     const { id } = req.params;
+    const user = req.user;
     const {
         title,
         categories,
@@ -88,6 +93,20 @@ const editDiscussion = async(req, res, next) => {
         isSolved
     } = req.body;
 
+    const nameuser = await User.findOne({
+        _id: user
+    })
+
+    const discussionId = await Discussion.findOne({
+        _id: id
+    })
+
+    if(nameuser.email !== discussionId.name) {
+        res.status(400).json({
+            success: false,
+            message: 'Tidak dapat melakukan edit pada diskusi ini'
+        })
+    }
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
@@ -144,16 +163,18 @@ const editDiscussion = async(req, res, next) => {
         count++;
     }
 
-    const discuss = await Discussion.findOneAndUpdate({
-        _id: id,
-        $set: {
-            title,
-            categories,
-            discussion,
-            date,
-            isSolved
+    const discuss = await Discussion.findOneAndUpdate(
+        {_id: id},
+        {
+            $set: {
+                title,
+                categories,
+                discussion,
+                date,
+                isSolved
+            }
         }
-    });
+    );
 
     if(discuss) {
         res.status(201).json({
@@ -165,7 +186,23 @@ const editDiscussion = async(req, res, next) => {
 }
 
 const deleteDiscussion = async(req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
+    const user = req.user;
+
+    const nameuser = await User.findOne({
+        _id: user
+    })
+
+    const discussionId = await Discussion.findOne({
+        _id: id
+    })
+
+    if(nameuser.email !== discussionId.name) {
+        res.status(400).json({
+            success: false,
+            message: 'Tidak dapat melakukan edit pada diskusi ini'
+        })
+    }
 
     const discussion = await Discussion.findOneAndDelete({
         _id: id
