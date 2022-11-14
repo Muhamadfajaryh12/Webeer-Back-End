@@ -92,7 +92,25 @@ const SendOTP = async ({_id,email},res) =>{
         })
     }
 }
+const ResendOTP= async(req,res)=>{
+    try{
+        let{idUser,email}=req.body;
 
+        if(!idUser  || !email){
+            throw Error ("Empty user details are not allowed");
+        }
+        else{
+            await OTPUser.deleteMany({idUser});
+            SendOTP({_id:idUser,email},res);
+        }
+    }
+    catch(error){
+            res.json({
+                status:"FAILED",
+                message:"Error resend",
+            })
+    }   
+}
 //Login
 const Login = async(req,res)=>{
     const {
@@ -156,5 +174,6 @@ module.exports = {
     Register,
     getUser,
     Login,
-    Logout
+    Logout,
+    ResendOTP,
 }
