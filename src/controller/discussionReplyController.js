@@ -1,15 +1,20 @@
 const { ObjectId } = require('mongodb');
 const Discussion = require('../models/discussion.js');
 const DiscussionReply = require('../models/discussionReply.js');
+const User = require('../models/user.js');
 
 const createReply = async(req,res) =>{
+    const user = req.user;
     const { id } = req.params;
     const replyID = new ObjectId();
 
     const {
-        user_name_reply,
         reply,
     } = req.body
+
+    const nameuser = await User.findOne({
+        _id: user
+    })
 
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -21,7 +26,8 @@ const createReply = async(req,res) =>{
     
     const newReply = new DiscussionReply({
         _id: replyID,
-        user_name_reply,
+        username: nameuser.username,
+        userid: nameuser._id,
         date,
         reply,
         discussionId: id
@@ -52,7 +58,20 @@ const getDiscussionReply = async(req, res) => {
 }
 
 const deleteReply = async(req, res) => {
+    const user = req.user;
     const { id } = req.params;
+
+    const replyId = await DiscussionReply.findOne({
+        _id: id
+    })
+
+    if (user._id !== replyId.userid) {
+        res.status(400).json({
+            success: false,
+            message: 'Tidak dapat menghapus balasan ini'
+        })
+        return
+    }
 
     const reply = await DiscussionReply.findOneAndDelete({
         _id: id

@@ -2,7 +2,11 @@ const { Schema, model } = require('mongoose');
 
 const DiscussionReplySchema = new Schema(
     {
-        user_name_reply: {
+        username: {
+            type: String,
+            ref: 'user'
+        },
+        userid: {
             type: String,
             ref: 'user'
         },
