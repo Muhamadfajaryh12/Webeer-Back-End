@@ -6,6 +6,21 @@ require("dotenv").config();
 const jwt = require('jsonwebtoken')
 const OTPUser = require('../models/otpUser')
 const nodemailer = require('nodemailer')
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
+cloudinary.config({
+    cloud_name:"webeer",
+    api_key :"447617849736884",
+    api_secret:"LW69GSs3E5G5aZmesVOazw3nszs",
+})
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: "Webeer",
+    },
+  });
+const uploadImg = multer({storage: storage}).single('image');
 // Register
 
 const transporter = nodemailer.createTransport({
@@ -27,11 +42,13 @@ const Register = async(req,res)=>
     } = req.body
     //Hash
     const salt = await bcrypt.genSalt(6);
-    const hash = await bcrypt.hash(password,salt)
+    const hash = await bcrypt.hash(password,salt);
+    const image = 'https://res.cloudinary.com/webeer/image/upload/v1668505113/Webeer/avatardefault300_muem41.jpg';
     
     const newUser = new User({
         username,
         email,
+        image,
         password:hash,
         isVerify:false,
  
@@ -162,12 +179,86 @@ const Logout = async(req,res)=>{
 
     
   }
-const getUser = async (req,res)=>{
-    const user = await User.find();
-    res.status(200).json({
+// const getUser = async (req,res)=>{
+//     const user = await User.find();
+//     res.status(200).json({
+//         success: true,
+//         data: user,
+//       });
+// }
+
+const getUser = async (req, res) => {
+    const user = req.user;
+
+    const userprofile = await User.findOne({
+        _id: user._id
+    });
+
+    const datauser = new User({
+        username: userprofile.username,
+        email: userprofile.email,
+        contact: userprofile.contact,
+        gender: userprofile.gender,
+        bio: userprofile.bio,
+        image: userprofile.image
+    })
+
+    res.json({
         success: true,
-        data: user,
-      });
+        data: datauser
+    })
+}
+
+const editUser = async (req, res) => {
+    const { id } = req.params;
+    const user = req.user;
+
+    const olduser = await User.findOne({
+        _id: id
+    });
+
+    let userImg = olduser.image;
+    if (req.file !== undefined) {
+        const { filename: image } = req.file;
+        userImg = cloudinary.url(`${image}.webp`, { width: 300, height: 300, crop: 'scale', quality: 70 });
+    }
+
+    const {
+        username,
+        email,
+        contact,
+        gender,
+        bio,
+    } = req.body;
+
+    if (user._id !== id) {
+        res.status(400).json({
+            success: false,
+            message: 'Tidak dapat mengubah profile'
+        })
+        return
+    }
+
+    const edituser = await User.findOneAndUpdate(
+        {_id: user._id},
+        {
+            $set: {
+                username,
+                email,
+                contact,
+                gender,
+                bio,
+                image: userImg
+            }
+        }
+    );
+    
+    if (edituser) {
+        res.status(201).json({
+            success: true,
+            message: 'Data berhasil diubah'
+        })
+    }
 }
 
 module.exports = {
@@ -176,4 +267,6 @@ module.exports = {
     Login,
     Logout,
     ResendOTP,
+    editUser,
+    uploadImg
 }

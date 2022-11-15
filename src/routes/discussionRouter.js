@@ -6,13 +6,15 @@ const {
     getAllDiscussion,
     deleteDiscussion,
     getDiscussion,
-    editDiscussion
+    editDiscussion,
+    getUserDiscussion
 } = require("../controller/discussionController");
 const asyncHandler = require("../utils/asyncHandler");
 const verifyToken = require('../middleware/auth');
 router.route("/").post(verifyToken,upload.any(), asyncHandler(createDiscussion));
-router.route("/").get(asyncHandler(getAllDiscussion));
-router.route("/:id").get(asyncHandler(getDiscussion));
+router.route("/").get(verifyToken, asyncHandler(getAllDiscussion));
+router.route("/user").get(verifyToken, asyncHandler(getUserDiscussion));
+router.route("/:id").get(verifyToken, asyncHandler(getDiscussion));
 router.route("/:id").put(verifyToken, upload.any(), asyncHandler(editDiscussion));
-router.route("/:id").delete(asyncHandler(deleteDiscussion));
+router.route("/:id").delete(verifyToken, asyncHandler(deleteDiscussion));
 module.exports = router;

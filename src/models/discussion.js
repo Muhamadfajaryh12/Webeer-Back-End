@@ -2,9 +2,13 @@ const { Schema, model } = require('mongoose');
 
 const DiscussionSchema =new Schema(
     {
-        name: {
+        username: {
             type: String,
             ref: 'user',
+        },
+        userid: {
+            type: String,
+            ref: 'user'
         },
         date: {
             type: String,

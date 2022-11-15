@@ -17,7 +17,7 @@ app.use(`${baseURL}/jobs`,jobs);
 app.use(`${baseURL}/users`,users);
 app.use(`${baseURL}/discussions`, discussions);
 app.use(`${baseURL}/discussionscategory`, category);
-app.use(`${baseURL}/discussionsreply`, reply);
+app.use(`${baseURL}/discussions/reply`, reply);
 app.listen(PORT,()=>{
     console.log(`Server Started at PORT ${PORT}`)
 })
