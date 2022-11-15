@@ -13,6 +13,18 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    contact: {
+        type: String,
+    },
+    gender: {
+        type: String,
+    },
+    bio: {
+        type: String,
+    },
+    image: {
+        type: String
+    },
     role:{
         type:String,
     },
