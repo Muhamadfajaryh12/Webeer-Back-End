@@ -102,7 +102,7 @@ const ResendOTP= async(req,res)=>{
         else{
             await OTPUser.deleteMany({idUser});
             SendOTP({_id:idUser,email},res);
-        }
+        }   
     }
     catch(error){
             res.json({
@@ -121,14 +121,14 @@ const Login = async(req,res)=>{
     const user = await User.findOne({email:email})
     if(!user){
         return res.status(400).json({
-            message:'Login Gagal, Email anda salah',
+            message:'Login tidak berhasil, Maaf email anda salah',
             error:true
         })
     }
     const passwordUser = await bcrypt.compare(password,user.password)
     if(!passwordUser){
         return res.status(400).json({
-            message:'Login Gagal, Password anda salah',
+            message:'Login tidak berhasil, Maaf password anda salah',
             error:true
         })
     }
