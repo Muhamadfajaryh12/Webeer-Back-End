@@ -45,7 +45,8 @@ const createDiscussion = async(req,res) =>{
 
     const newDiscussion = new Discussion({
         _id: discussionID,
-        name: nameuser.email,
+        userid: user,
+        username: nameuser.username,
         date,
         title,
         categories,
@@ -83,6 +84,19 @@ const getDiscussion = async(req, res) => {
     })
 }
 
+const getUserDiscussion = async(req, res) => {
+    const user = req.user;
+    
+    const discussion = await Discussion.find({
+        userid: user._id
+    })
+
+    res.json({
+        success: true,
+        data: discussion
+    })
+}
+
 const editDiscussion = async(req, res, next) => {
     const { id } = req.params;
     const user = req.user;
@@ -93,19 +107,16 @@ const editDiscussion = async(req, res, next) => {
         isSolved
     } = req.body;
 
-    const nameuser = await User.findOne({
-        _id: user
-    })
-
     const discussionId = await Discussion.findOne({
         _id: id
     })
 
-    if(nameuser.email !== discussionId.name) {
+    if(user._id !== discussionId.userid) {
         res.status(400).json({
             success: false,
             message: 'Tidak dapat melakukan edit pada diskusi ini'
         })
+        return
     }
     const newDate = new Date();
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -189,19 +200,16 @@ const deleteDiscussion = async(req, res) => {
     const { id } = req.params;
     const user = req.user;
 
-    const nameuser = await User.findOne({
-        _id: user
-    })
-
     const discussionId = await Discussion.findOne({
         _id: id
     })
 
-    if(nameuser.email !== discussionId.name) {
+    if(user._id !== discussionId.userid) {
         res.status(400).json({
             success: false,
-            message: 'Tidak dapat melakukan edit pada diskusi ini'
+            message: 'Tidak dapat menghapus diskusi ini'
         })
+        return
     }
 
     const discussion = await Discussion.findOneAndDelete({
@@ -238,6 +246,7 @@ const deleteDiscussion = async(req, res) => {
 module.exports = {
     createDiscussion,
     getAllDiscussion,
+    getUserDiscussion,
     getDiscussion,
     editDiscussion,
     deleteDiscussion
