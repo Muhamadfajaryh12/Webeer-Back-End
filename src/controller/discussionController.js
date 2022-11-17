@@ -47,6 +47,7 @@ const createDiscussion = async(req,res) =>{
         _id: discussionID,
         userid: user,
         username: nameuser.username,
+        userimage: nameuser.image,
         date,
         title,
         categories,
