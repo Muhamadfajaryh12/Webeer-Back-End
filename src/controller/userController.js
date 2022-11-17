@@ -38,6 +38,7 @@ const Register = async(req,res)=>
         username,
         email,
         password,
+        role
      
     } = req.body
     //Hash
@@ -50,6 +51,7 @@ const Register = async(req,res)=>
         email,
         image,
         password:hash,
+        role,
         isVerify:false,
  
     })
@@ -60,41 +62,40 @@ const Register = async(req,res)=>
             error:true
         })
     }
-    const user = await newUser.save().then((result)=>{
+        newUser.save().then((result)=>{
         SendOTP(result,res)
     })
-    res.status(201).json({
-        success:true,
-        message:'Registrasi Berhasil',
-        data:user
-    });
+  
 }
 const SendOTP = async ({_id,email},res) =>{
-    try{
-        function generatePassword() {
-            const length = 5;
-            const charset = '0123456789';
-            let retVal = '';
-            for (let i = 0, n = charset.length; i < length; ++i) {
-              retVal += charset.charAt(Math.floor(Math.random() * n));
+
+            function generatePassword() {
+                const length = 5;
+                const charset = '0123456789';
+                let retVal = '';
+                for (let i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+                }
+                return retVal;
             }
-            return retVal;
-          }
+          const getOTP = generatePassword();
           const mailOptions ={
             from:'webeercapstone@gmail.com',
             to:email,
             subject:"Verify Your Account",
-            html:generatePassword()
+            html: `Segera masukkan kode OTP anda ${getOTP} <b> Kode akan hangus setelah 5 menit </b>`
           }
           const newOTPUser = await new OTPUser({
             idUser:_id,
-            otp:generatePassword()
+            OTP: getOTP,
+            createAt    : Date.now(),
+            expiresAt   : Date.now() + 30000
           })
-          await newOTPUser.save();
           await transporter.sendMail(mailOptions);
-          res.json({
-            status:'PENDING',
+          newOTPUser.save();
+          res.status(200).json({
             message:'Verification OTP Email send',
+            success:true,
             data:{
                 idUser:_id,
                 email,
@@ -102,13 +103,8 @@ const SendOTP = async ({_id,email},res) =>{
           })
 
     }
-    catch(error){
-        res.json({
-            status:"FAILED",
-            message:'error message',
-        })
-    }
-}
+
+
 const ResendOTP= async(req,res)=>{
     try{
         let{idUser,email}=req.body;
@@ -119,7 +115,7 @@ const ResendOTP= async(req,res)=>{
         else{
             await OTPUser.deleteMany({idUser});
             SendOTP({_id:idUser,email},res);
-        }
+        }   
     }
     catch(error){
             res.json({
@@ -128,6 +124,58 @@ const ResendOTP= async(req,res)=>{
             })
     }   
 }
+
+//Verify
+const VerifikasiOTP = async(req,res)=>{
+    try{
+       let { idUser , OTP } = req.body;
+            const UserOTPVerifikasi = await OTPUser.find({
+                idUser,
+            });
+            if( UserOTPVerifikasi.length <= 0){
+                res.status(400).json({
+                    error:true,
+                    message:"Silahkan buat akun terlebih dahulu",
+                })
+            }
+            else{
+                const {expiresAt} =  UserOTPVerifikasi[0];
+                if(expiresAt < Date.now()){
+                    await OTPUser.deleteMany({idUser});
+                    res.status(400).json({
+                        error:true,
+                        message:"Kode OTP anda sudah expired",
+                    })
+                }
+                else{
+                    const validateOTP = await UserOTPVerifikasi[0].OTP;
+                    if(validateOTP !== OTP){
+                        res.status(400).json({
+                            error:true,
+                            message:"Kode OTP yang anda masukan salah, silahkan coba kembali",
+                        })
+                    }
+                    else{
+                        await User.updateOne({_id:idUser},{isVerify:true});
+                        await OTPUser.deleteMany({idUser});
+                        res.status(200).json({
+                            success:true,
+                            message:"Selamat anda berhasil verifikasi akun, silahkan login",
+                        })
+                    }
+                }
+            }
+        
+    }
+    catch(error){
+        res.status(400).json({
+            error:true,
+            message:"Terjadi kesalahan, gagal verifikasi akun"
+        })
+    }
+}
+
+
 //Login
 const Login = async(req,res)=>{
     const {
@@ -138,18 +186,24 @@ const Login = async(req,res)=>{
     const user = await User.findOne({email:email})
     if(!user){
         return res.status(400).json({
-            message:'Login Gagal, Email anda salah',
+            message:'Login tidak berhasil, Maaf email anda salah',
             error:true
         })
     }
     const passwordUser = await bcrypt.compare(password,user.password)
     if(!passwordUser){
         return res.status(400).json({
-            message:'Login Gagal, Password anda salah',
+            message:'Login tidak berhasil, Maaf password anda salah',
             error:true
         })
     }
-    
+    const verifikasi = await user.isVerify
+    if(!verifikasi){
+        return res.status(400).json({
+            message:'Login tidak berhasil, Akun anda tidak terverifikasi',
+            error:true,
+        })
+    }
     const generateToken = jwt.sign({ _id:user._id}, process.env.SECRET_KEY)
     res.header('auth',generateToken)
     user.token=generateToken
@@ -199,7 +253,7 @@ const getUser = async (req, res) => {
         username: userprofile.username,
         email: userprofile.email,
         contact: userprofile.contact,
-        gender: userprofile.gender,
+        profesi: userprofile.profesi,
         bio: userprofile.bio,
         image: userprofile.image
     })
@@ -228,7 +282,7 @@ const editUser = async (req, res) => {
         username,
         email,
         contact,
-        gender,
+        profesi,
         bio,
     } = req.body;
 
@@ -247,7 +301,7 @@ const editUser = async (req, res) => {
                 username,
                 email,
                 contact,
-                gender,
+                profesi,
                 bio,
                 image: userImg
             }
@@ -268,6 +322,7 @@ module.exports = {
     Login,
     Logout,
     ResendOTP,
+    VerifikasiOTP,
     editUser,
     uploadImg
 }
