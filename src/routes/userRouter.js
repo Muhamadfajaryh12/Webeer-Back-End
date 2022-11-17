@@ -8,7 +8,8 @@ const {
     Login,
     Logout,
     ResendOTP,
-    editUser
+    editUser,
+    VerifikasiOTP
 } = require("../controller/userController");
 const asyncHandler = require("../utils/asyncHandler");
 const { uploadImg } = require("../controller/jobController");
@@ -18,4 +19,5 @@ router.route("/logout").post(verifyToken,upload.any(),asyncHandler(Logout))
 router.route("/edit/:id").put(verifyToken, uploadImg, asyncHandler(editUser))
 router.route("/").get(verifyToken, asyncHandler(getUser))
 router.route("/resendOTP").post(upload.any(),asyncHandler(ResendOTP))
+router.route("/verifikasiOTP").post(upload.any(),asyncHandler(VerifikasiOTP))
 module.exports = router;

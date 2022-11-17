@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     contact: {
         type: String,
     },
-    gender: {
+    profesi: {
         type: String,
     },
     bio: {
