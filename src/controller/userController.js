@@ -195,6 +195,7 @@ const getUser = async (req, res) => {
     });
 
     const datauser = new User({
+        _id: user._id,
         username: userprofile.username,
         email: userprofile.email,
         contact: userprofile.contact,

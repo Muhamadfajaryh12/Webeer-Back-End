@@ -24,7 +24,7 @@ const createDiscussion = async(req,res) =>{
     if(typeof(categories) === 'object') {
         categories.forEach(async(category) => {
             const isExist = await Category.findOne({
-                name: category.toLowerCase()
+                name: category
             });
             
             if(isExist !== null) {
@@ -34,7 +34,7 @@ const createDiscussion = async(req,res) =>{
         });
     } else {
         const isExist = await Category.findOne({
-            name: categories.toLowerCase()
+            name: categories
         });
         
         if(isExist !== null) {
@@ -64,10 +64,24 @@ const createDiscussion = async(req,res) =>{
 }
 
 const getAllDiscussion = async(req, res) => {
-    const discuss = await Discussion.find();
+    const { category } = req.query;
+    console.log(category)
+
+    let discussions = await Discussion.find();
+
+    if (category !== undefined) {
+        if((typeof(category)).includes('object')) {
+            category.forEach((c) => {
+                discussions = discussions.filter((discuss) => discuss.categories.includes(c))
+            })
+        } else {
+            discussions = discussions.filter((discuss) => discuss.categories.includes(category))
+        }
+    }
+
     res.json({
         success: true,
-        data: discuss,
+        data: discussions,
       });
 }
 
