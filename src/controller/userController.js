@@ -9,6 +9,7 @@ const nodemailer = require('nodemailer')
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
+const Discussion = require('../models/discussion.js');
 cloudinary.config({
     cloud_name:"webeer",
     api_key :"447617849736884",
@@ -249,6 +250,7 @@ const getUser = async (req, res) => {
     });
 
     const datauser = new User({
+        _id: user._id,
         username: userprofile.username,
         email: userprofile.email,
         contact: userprofile.contact,
@@ -275,6 +277,12 @@ const editUser = async (req, res) => {
     if (req.file !== undefined) {
         const { filename: image } = req.file;
         userImg = cloudinary.url(`${image}.webp`, { width: 300, height: 300, crop: 'scale', quality: 70 });
+
+        const updateUserImage = await Discussion.find({
+            userid: id
+        })
+
+        console.log(updateUserImage)
     }
 
     const {
