@@ -10,6 +10,10 @@ const DiscussionReplySchema = new Schema(
             type: String,
             ref: 'user'
         },
+        userimage: {
+            type: String,
+            ref: 'user'
+        },
         date: {
             type: String,
             required: true

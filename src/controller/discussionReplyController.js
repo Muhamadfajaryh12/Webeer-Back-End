@@ -28,6 +28,7 @@ const createReply = async(req,res) =>{
         _id: replyID,
         username: nameuser.username,
         userid: nameuser._id,
+        userimage: nameuser.image,
         date,
         reply,
         discussionId: id
