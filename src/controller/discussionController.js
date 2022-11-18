@@ -65,18 +65,21 @@ const createDiscussion = async(req,res) =>{
 }
 
 const getAllDiscussion = async(req, res) => {
-    const { category } = req.query;
-    console.log(category)
+    const { category, search } = req.query;
 
     let discussions = await Discussion.find();
+    
+    if (search !== undefined) {
+        discussions = discussions.filter((discussion) => discussion.title.toLowerCase().includes(search.toLowerCase()))
+    }
 
     if (category !== undefined) {
         if((typeof(category)).includes('object')) {
-            category.forEach((c) => {
-                discussions = discussions.filter((discuss) => discuss.categories.includes(c))
+            category.forEach((categoryItem) => {
+                discussions = discussions.filter((discussion) => discussion.categories.includes(categoryItem))
             })
         } else {
-            discussions = discussions.filter((discuss) => discuss.categories.includes(category))
+            discussions = discussions.filter((discussion) => discussion.categories.includes(category))
         }
     }
 
