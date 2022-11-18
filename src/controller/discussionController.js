@@ -102,6 +102,19 @@ const getDiscussion = async(req, res) => {
     })
 }
 
+const getDiscussionOtherUser = async(req, res) => {
+    const user = req.params.id;
+
+    const discussion = await Discussion.find({
+        userid: user
+    })
+
+    res.json({
+        success: true,
+        data: discussion
+    })
+}
+
 const getUserDiscussion = async(req, res) => {
     const user = req.user;
     
@@ -267,5 +280,6 @@ module.exports = {
     getUserDiscussion,
     getDiscussion,
     editDiscussion,
-    deleteDiscussion
+    deleteDiscussion,
+    getDiscussionOtherUser,
 };
