@@ -241,7 +241,7 @@ const Logout = async(req,res)=>{
 //         data: user,
 //       });
 // }
-
+ 
 const getUser = async (req, res) => {
     const user = req.user;
 
@@ -265,6 +265,17 @@ const getUser = async (req, res) => {
     })
 }
 
+const getUserDetail = async (req,res)=>{
+    const id = req.params.id;
+    const userDetail = await User.findOne({
+        _id:id
+    }).exec();
+
+    res.json({
+        success:true,
+        data:userDetail
+    })
+}
 const editUser = async (req, res) => {
     const { id } = req.params;
     const user = req.user;
@@ -295,7 +306,7 @@ const editUser = async (req, res) => {
 
     if (user._id !== id) {
         res.status(400).json({
-            success: false,
+            error: true,
             message: 'Tidak dapat mengubah profile'
         })
         return
@@ -315,12 +326,16 @@ const editUser = async (req, res) => {
         }
     );
     
-    if (edituser) {
-        res.status(201).json({
-            success: true,
-            message: 'Data berhasil diubah'
+    if (!edituser) {
+        res.status(400).json({
+            error:true,
+            message:'Data gagal untuk diperbaharui'
         })
     }
+    res.status(201).json({
+        success: true,
+        message: 'Data berhasil diubah'
+    })
 }
 
 module.exports = {
@@ -331,5 +346,6 @@ module.exports = {
     ResendOTP,
     VerifikasiOTP,
     editUser,
-    uploadImg
+    uploadImg,
+    getUserDetail
 }
