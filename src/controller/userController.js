@@ -10,6 +10,7 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
 const Discussion = require('../models/discussion.js');
+const DiscussionReply = require('../models/discussionReply.js');
 cloudinary.config({
     cloud_name:"webeer",
     api_key :"447617849736884",
@@ -310,6 +311,46 @@ const editUser = async (req, res) => {
             message: 'Tidak dapat mengubah profile'
         })
         return
+    }
+
+    const discussions = await Discussion.find({
+        userid: user._id
+    })
+
+    if(discussions.length !== 0) {
+        discussions.forEach(async (discussionId) => {
+            const editDiscussion = await Discussion.findOneAndUpdate(
+                { _id: discussionId._id },
+                {
+                    $set: {
+                        username: username,
+                        userimage: userImg
+                    }
+                }
+            );
+    
+            await editDiscussion.save();
+        })
+    }
+
+    const discussionReply = await DiscussionReply.find({
+        userid: user._id
+    })
+
+    if(discussionReply.length !== 0) {
+        discussionReply.forEach(async (discussionId) => {
+            const editDiscussionReply = await DiscussionReply.findOneAndUpdate(
+                { _id: discussionId._id },
+                {
+                    $set: {
+                        username: username,
+                        userimage: userImg
+                    }
+                }
+            );
+    
+            await editDiscussionReply.save();
+        })
     }
 
     const edituser = await User.findOneAndUpdate(

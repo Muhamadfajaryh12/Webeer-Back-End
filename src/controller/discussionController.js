@@ -67,7 +67,7 @@ const createDiscussion = async(req,res) =>{
 const getAllDiscussion = async(req, res) => {
     const { category, search } = req.query;
 
-    let discussions = await Discussion.find();
+    let discussions = await Discussion.find().sort({createdAt: -1});
     
     if (search !== undefined) {
         discussions = discussions.filter((discussion) => discussion.title.toLowerCase().includes(search.toLowerCase()))
