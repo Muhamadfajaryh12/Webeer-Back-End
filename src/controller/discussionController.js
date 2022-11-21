@@ -20,7 +20,7 @@ const createDiscussion = async(req,res) =>{
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
     const reply = [];
-    const isSolved = false;
+    const isSolved = true;
     if(typeof(categories) === 'object') {
         categories.forEach(async(category) => {
             const isExist = await Category.findOne({

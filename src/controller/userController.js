@@ -337,7 +337,51 @@ const editUser = async (req, res) => {
         message: 'Data berhasil diubah'
     })
 }
+const changePassword = async (req,res) =>{
+    const { id } = req.params;
+    const user = req.user;
+    const { newPassword,confirmPassword,oldPassword } = req.body
+    if(user._id !== id){
+         res.status(400).json({
+            message:'Terjadi Kesalahan',
+            error:true,
+        })
+        return
+    }
+    
+    const olduser = await User.findOne({
+        _id: id
+    });
 
+    const userPassword = await bcrypt.compare(oldPassword,olduser.password)
+    if(!userPassword){
+        return res.status(400).json({
+            message:'Maaf password lama anda tidak sesuai, silahkan coba kembali',
+            error:true,
+        })
+    }
+
+    if(newPassword != confirmPassword){
+        return res.status(400).json({
+            message:'Maaf password baru anda tidak sesuai, silahkan coba kembali',
+            eror:true,
+        })
+    }
+    const salt = await bcrypt.genSalt(6);
+    const hash = await bcrypt.hash(newPassword,salt);
+    const updateUser = await User.findOneAndUpdate({_id:user._id}, {password:hash})
+    if(!updateUser){
+        res.status(400).json({
+            message:'Password tidak berhasil diperbaharui',
+            error:true,
+        })
+    }
+    res.status(200).json({
+        success:true,
+        message:'Password dberhasil diganti',
+    })
+
+}
 module.exports = {
     Register,
     getUser,
@@ -347,5 +391,6 @@ module.exports = {
     VerifikasiOTP,
     editUser,
     uploadImg,
-    getUserDetail
+    getUserDetail,
+    changePassword
 }
