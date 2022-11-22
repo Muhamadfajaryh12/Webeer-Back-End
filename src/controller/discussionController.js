@@ -20,7 +20,7 @@ const createDiscussion = async(req,res) =>{
     const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
     const reply = [];
-    const isSolved = true;
+    const isSolved = false;
     if(typeof(categories) === 'object') {
         categories.forEach(async(category) => {
             const isExist = await Category.findOne({
@@ -65,21 +65,31 @@ const createDiscussion = async(req,res) =>{
 }
 
 const getAllDiscussion = async(req, res) => {
-    const { category, search } = req.query;
+    const { sort, category, search } = req.query;
 
     let discussions = await Discussion.find().sort({createdAt: -1});
+
+    if(sort !== undefined) {
+        if(sort === 'true') {
+            discussions = await Discussion.find().sort({isSolved: -1, createdAt: -1});
+        } else if(sort === 'false') {
+            discussions = await Discussion.find().sort({isSolved: 1, createdAt: -1});
+        } else if(sort === 'oldest') {
+            discussions = await Discussion.find().sort({createdAt: 1});
+        }
+    }
     
     if (search !== undefined) {
-        discussions = discussions.filter((discussion) => discussion.title.toLowerCase().includes(search.toLowerCase()))
+        discussions = discussions.filter((discussion) => discussion.title.toLowerCase().includes(search.toLowerCase()));
     }
 
     if (category !== undefined) {
         if((typeof(category)).includes('object')) {
             category.forEach((categoryItem) => {
-                discussions = discussions.filter((discussion) => discussion.categories.includes(categoryItem))
+                discussions = discussions.filter((discussion) => discussion.categories.includes(categoryItem));
             })
         } else {
-            discussions = discussions.filter((discussion) => discussion.categories.includes(category))
+            discussions = discussions.filter((discussion) => discussion.categories.includes(category));
         }
     }
 
