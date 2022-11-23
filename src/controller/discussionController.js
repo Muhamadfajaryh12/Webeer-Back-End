@@ -243,7 +243,7 @@ const deleteDiscussion = async(req, res) => {
 
     const discussionId = await Discussion.findOne({
         _id: id
-    })
+    });
 
     if(user._id !== discussionId.userid) {
         res.status(400).json({
@@ -251,7 +251,7 @@ const deleteDiscussion = async(req, res) => {
             message: 'Tidak dapat menghapus diskusi ini'
         })
         return
-    }
+    };
 
     const discussion = await Discussion.findOneAndDelete({
         _id: id
@@ -269,20 +269,20 @@ const deleteDiscussion = async(req, res) => {
         }
 
         await category.save();
-    })
+    });
     
     discussion.reply.forEach(async (discuss) => {
         await DiscussionReply.findOneAndDelete({
             _id: discuss
         });
-    })
+    });
 
     if(discussion) {
         res.send({
             success: true,
             message: 'Delete Successfully'
         })
-    }
+    };
 }
 module.exports = {
     createDiscussion,
