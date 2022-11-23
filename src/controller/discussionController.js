@@ -236,11 +236,11 @@ const deleteDiscussion = async(req, res) => {
     })
 
     if(user._id !== discussionId.userid) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: 'Tidak dapat menghapus diskusi ini'
         })
-        return
+        
     }
 
     const discussion = await Discussion.findOneAndDelete({
@@ -273,6 +273,8 @@ const deleteDiscussion = async(req, res) => {
             message: 'Delete Successfully'
         })
     }
+
+
 }
 module.exports = {
     createDiscussion,
