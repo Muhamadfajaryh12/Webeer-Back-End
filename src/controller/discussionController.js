@@ -154,8 +154,8 @@ const editDiscussion = async(req, res, next) => {
 
     if(user._id !== discussionId.userid) {
         res.status(400).json({
-            success: false,
-            message: 'Tidak dapat melakukan edit pada diskusi ini'
+            error: true,
+            message: 'There is an error'
         })
         return
     }
@@ -232,7 +232,13 @@ const editDiscussion = async(req, res, next) => {
         res.status(201).json({
             success: true,
             data: discuss,
-            message: 'Data berhasil diupdate'
+            message: 'You have successfully updated the discussion'
+        })
+    }
+    else{
+        res.status(400).json({
+            error:true,
+            message:'You failed to update the discussion'
         })
     }
 }

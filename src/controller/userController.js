@@ -235,14 +235,7 @@ const Logout = async(req,res)=>{
 
     
   }
-// const getUser = async (req,res)=>{
-//     const user = await User.find();
-//     res.status(200).json({
-//         success: true,
-//         data: user,
-//       });
-// }
- 
+
 const getUser = async (req, res) => {
     const user = req.user;
 
@@ -256,6 +249,7 @@ const getUser = async (req, res) => {
         email: userprofile.email,
         contact: userprofile.contact,
         profesi: userprofile.profesi,
+        country: userprofile.country,
         bio: userprofile.bio,
         image: userprofile.image
     })
@@ -303,6 +297,7 @@ const editUser = async (req, res) => {
         contact,
         profesi,
         bio,
+        country,
     } = req.body;
 
     if (user._id !== id) {
@@ -362,6 +357,7 @@ const editUser = async (req, res) => {
                 contact,
                 profesi,
                 bio,
+                country,
                 image: userImg
             }
         }
