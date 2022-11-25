@@ -48,27 +48,30 @@ const createReply = async(req,res) =>{
 const getDiscussionReply = async(req, res) => {
     const { id } = req.params;
 
-    const userReply = await DiscussionReply.find({
+    const discussionReply = await DiscussionReply.find({
         discussionId: id
     });
 
-    res.json({
-        success: true,
-        data: userReply,
-      });
-}
-
-const getUserDicussionReply = async(req, res) => {
-    const user = req.user;
-
     const userReply = await DiscussionReply.find({
-        userid: user._id
+        userid: id
     });
 
-    res.json({
-        success: true,
-        data: userReply
-    });
+    if (discussionReply.length !== 0) {
+        res.json({
+            success: true,
+            data: discussionReply,
+        });
+    } else if (userReply.length !== 0) {
+        res.json({
+            success: true,
+            data: userReply,
+        });
+    } else {
+        res.json({
+            success: false,
+            message: 'Error! Data not found'
+        })
+    }
 }
 
 const deleteReply = async(req, res) => {
