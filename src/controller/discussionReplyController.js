@@ -58,6 +58,19 @@ const getDiscussionReply = async(req, res) => {
       });
 }
 
+const getUserDicussionReply = async(req, res) => {
+    const user = req.user;
+
+    const userReply = await DiscussionReply.find({
+        userid: user._id
+    });
+
+    res.json({
+        success: true,
+        data: userReply
+    });
+}
+
 const deleteReply = async(req, res) => {
     const user = req.user;
     const { id } = req.params;
@@ -100,5 +113,6 @@ const deleteReply = async(req, res) => {
 module.exports = {
     createReply,
     getDiscussionReply,
+    getUserDicussionReply,
     deleteReply
 }
