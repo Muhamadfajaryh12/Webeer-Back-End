@@ -6,6 +6,9 @@ const {
     getJobDetail,
     getJobName,
     uploadImg,
+    getCompanyJob,
+    deleteJob,
+    editJob,
 } = require("../controller/jobController");
 const asyncHandler = require("../utils/asyncHandler");
 const verifyToken = require('../middleware/auth')
@@ -13,4 +16,7 @@ router.route("/").post(verifyToken,uploadImg,asyncHandler(createJob));
 router.route("/all").get(asyncHandler(getJob));
 router.route("/detail/:id").get(asyncHandler(getJobDetail));
 router.route("/").get(asyncHandler(getJobName));
+router.route("/company").get(verifyToken,asyncHandler(getCompanyJob));
+router.route("/:id").delete(verifyToken,asyncHandler(deleteJob));
+router.route("/:id").put(verifyToken,uploadImg,asyncHandler(editJob));
 module.exports = router;

@@ -116,6 +116,5 @@ const deleteReply = async(req, res) => {
 module.exports = {
     createReply,
     getDiscussionReply,
-    getUserDicussionReply,
     deleteReply
 }

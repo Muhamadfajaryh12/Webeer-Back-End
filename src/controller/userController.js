@@ -60,7 +60,7 @@ const Register = async(req,res)=>
     const validateEmail = await User.findOne({email:email})
     if(validateEmail){
         return res.status(400).json({
-            message:'Registrasi Gagal, Email sudah digunakan',
+            message:'Registration Failed, Email already in use',
             error:true
         })
     }
@@ -137,7 +137,7 @@ const VerifikasiOTP = async(req,res)=>{
             if( UserOTPVerifikasi.length <= 0){
                 res.status(400).json({
                     error:true,
-                    message:"Silahkan buat akun terlebih dahulu",
+                    message:"Please create an account first",
                 })
             }
             else{
@@ -146,7 +146,7 @@ const VerifikasiOTP = async(req,res)=>{
                     await OTPUser.deleteMany({idUser});
                     res.status(400).json({
                         error:true,
-                        message:"Kode OTP anda sudah expired",
+                        message:"Your OTP code has expired",
                     })
                 }
                 else{
@@ -154,7 +154,7 @@ const VerifikasiOTP = async(req,res)=>{
                     if(validateOTP !== OTP){
                         res.status(400).json({
                             error:true,
-                            message:"Kode OTP yang anda masukan salah, silahkan coba kembali",
+                            message:"The OTP code you entered was incorrect, please try again",
                         })
                     }
                     else{
@@ -162,7 +162,7 @@ const VerifikasiOTP = async(req,res)=>{
                         await OTPUser.deleteMany({idUser});
                         res.status(200).json({
                             success:true,
-                            message:"Selamat anda berhasil verifikasi akun, silahkan login",
+                            message:"Congratulations, you have successfully verified your account, please login",
                         })
                     }
                 }
@@ -172,7 +172,7 @@ const VerifikasiOTP = async(req,res)=>{
     catch(error){
         res.status(400).json({
             error:true,
-            message:"Terjadi kesalahan, gagal verifikasi akun"
+            message:"An error occurred, account verification failed"
         })
     }
 }
@@ -188,21 +188,21 @@ const Login = async(req,res)=>{
     const user = await User.findOne({email:email})
     if(!user){
         return res.status(400).json({
-            message:'Login tidak berhasil, Maaf email anda salah',
+            message:'Login unsuccessful, your email is incorrect',
             error:true
         })
     }
     const passwordUser = await bcrypt.compare(password,user.password)
     if(!passwordUser){
         return res.status(400).json({
-            message:'Login tidak berhasil, Maaf password anda salah',
+            message:'Login failed, your password is wrong',
             error:true
         })
     }
     const verifikasi = await user.isVerify
     if(!verifikasi){
         return res.status(400).json({
-            message:'Login tidak berhasil, Akun anda tidak terverifikasi',
+            message:'Login unsuccessful, Your account is not verified',
             error:true,
         })
     }
@@ -212,7 +212,7 @@ const Login = async(req,res)=>{
     return res.json({
         token:generateToken,
         user:user,
-        message:'Login Berhasil',
+        message:'You have successfully logged in',
     })
 
 
@@ -224,12 +224,12 @@ const Logout = async(req,res)=>{
     if (user.token !==token){
         res.json({
             error:true,
-            message:"Terjadi Kesalahan",
+            message:"There is an error",
         })
     }
     res.json({
     success: true,
-    message:"Anda Berhasil Logout"
+    message:"You have successfully logged out"
     });
 
 
@@ -303,7 +303,7 @@ const editUser = async (req, res) => {
     if (user._id !== id) {
         res.status(400).json({
             error: true,
-            message: 'Tidak dapat mengubah profile'
+            message: 'Unable to change profile data'
         })
         return
     }
@@ -366,12 +366,12 @@ const editUser = async (req, res) => {
     if (!edituser) {
         res.status(400).json({
             error:true,
-            message:'Data gagal untuk diperbaharui'
+            message:'Data failed to update'
         })
     }
     res.status(201).json({
         success: true,
-        message: 'Data berhasil diubah'
+        message: 'Data updated successfully'
     })
 }
 const changePassword = async (req,res) =>{
