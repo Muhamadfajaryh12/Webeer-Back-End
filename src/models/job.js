@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const JobSchema =new mongoose.Schema({
+    companyid:{
+        type:String,
+        ref:'user',
+    },
     company:{
         type:String,
         required:true,
@@ -43,10 +47,9 @@ const JobSchema =new mongoose.Schema({
             required:true
         },
         qualification:{
-            type:Array,
+            type:String,
             required:true
         }
-          
     },
     image:{
         type: String
