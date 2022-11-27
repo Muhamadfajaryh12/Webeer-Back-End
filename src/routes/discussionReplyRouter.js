@@ -4,8 +4,7 @@ const upload = require('multer')();
 const {
     createReply,
     deleteReply,
-    getDiscussionReply,
-    getUserDicussionReply
+    getDiscussionReply
 } = require("../controller/discussionReplyController");
 const asyncHandler = require("../utils/asyncHandler");
 const verifyToken = require('../middleware/auth')

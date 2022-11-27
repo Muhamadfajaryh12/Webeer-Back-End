@@ -12,7 +12,7 @@ const createCategory = async (req, res, next) => {
     if(isExist !== null) {
         res.status(400).json({
             success: false,
-            message: 'Kategori tersebut sudah ada'
+            message: 'Category already exists'
         });
     } else {
         const discussions = [];
@@ -62,7 +62,7 @@ const deleteCategory = async (req, res, next) => {
     if(category) {
         res.status(201).json({
             success: true,
-            message: 'Data berhasil dihapus'
+            message: 'Data deleted successfully'
         })
     }
 }

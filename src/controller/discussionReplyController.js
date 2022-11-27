@@ -85,7 +85,7 @@ const deleteReply = async(req, res) => {
     if (user._id !== replyId.userid) {
         res.status(400).json({
             success: false,
-            message: 'Tidak dapat menghapus balasan ini'
+            message: 'Unable to delete this reply'
         })
         return
     }
@@ -116,6 +116,5 @@ const deleteReply = async(req, res) => {
 module.exports = {
     createReply,
     getDiscussionReply,
-    getUserDicussionReply,
     deleteReply
 }

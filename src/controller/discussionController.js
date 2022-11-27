@@ -117,7 +117,7 @@ const getDiscussionOtherUser = async(req, res) => {
 
     const discussion = await Discussion.find({
         userid: user
-    })
+    }).sort({createdAt: -1});
 
     res.json({
         success: true,
@@ -130,7 +130,7 @@ const getUserDiscussion = async(req, res) => {
     
     const discussion = await Discussion.find({
         userid: user._id
-    })
+    }).sort({createdAt: -1});
 
     res.json({
         success: true,
@@ -254,7 +254,7 @@ const deleteDiscussion = async(req, res) => {
     if(user._id !== discussionId.userid) {
         res.status(400).json({
             success: false,
-            message: 'Tidak dapat menghapus diskusi ini'
+            message: 'Cannot delete this discussion'
         })
         return
     };
