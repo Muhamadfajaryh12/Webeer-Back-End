@@ -30,6 +30,7 @@ const createJob = async(req,res) =>{
         descriptionProfession,
         level,
         salary,
+        salary2,
         timeWork,
         workplace,
         qualification,
@@ -47,6 +48,7 @@ const createJob = async(req,res) =>{
         descriptionProfession,
         level,
         salary,
+        salary2,
         timeWork,
         workplace,
         link,
@@ -58,6 +60,7 @@ const createJob = async(req,res) =>{
 
     res.status(201).json({
         success: true,
+        message:"Successfully opened a job vacancy",
         data: job,
       });
 }
@@ -122,6 +125,7 @@ const editJob = async (req,res)=>{
         descriptionProfession,
         level,
         salary,
+        salary2,
         timeWork,
         workplace,
         qualification,
@@ -151,14 +155,17 @@ const editJob = async (req,res)=>{
                 company,
                 profession,
                 address,
+                details:{
                 descriptionCompany,
                 descriptionProfession,
                 level,
                 salary,
+                salary2,
                 timeWork,
                 workplace,
                 qualification,
                 link,
+                },
                 image:userImg
             }
         }

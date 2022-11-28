@@ -380,7 +380,7 @@ const changePassword = async (req,res) =>{
     const { newPassword,confirmPassword,oldPassword } = req.body
     if(user._id !== id){
          res.status(400).json({
-            message:'Terjadi Kesalahan',
+            message:'There is an error',
             error:true,
         })
         return
@@ -393,14 +393,14 @@ const changePassword = async (req,res) =>{
     const userPassword = await bcrypt.compare(oldPassword,olduser.password)
     if(!userPassword){
         return res.status(400).json({
-            message:'Maaf password lama anda tidak sesuai, silahkan coba kembali',
+            message:'Sorry, your old password doesnt match, please try again',
             error:true,
         })
     }
 
     if(newPassword != confirmPassword){
         return res.status(400).json({
-            message:'Maaf password baru anda tidak sesuai, silahkan coba kembali',
+            message:'Sorry, your new passwords dont match, please try again',
             eror:true,
         })
     }
@@ -409,13 +409,13 @@ const changePassword = async (req,res) =>{
     const updateUser = await User.findOneAndUpdate({_id:user._id}, {password:hash})
     if(!updateUser){
         res.status(400).json({
-            message:'Password tidak berhasil diperbaharui',
+            message:'Password update failed',
             error:true,
         })
     }
     res.status(200).json({
         success:true,
-        message:'Password dberhasil diganti',
+        message:'Password successfully changed',
     })
 
 }
