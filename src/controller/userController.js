@@ -91,7 +91,7 @@ const SendOTP = async ({_id,email},res) =>{
             idUser:_id,
             OTP: getOTP,
             createAt    : Date.now(),
-            expiresAt   : Date.now() + 30000
+            expiresAt   : Date.now() + 300000
           })
           await transporter.sendMail(mailOptions);
           newOTPUser.save();
