@@ -50,7 +50,7 @@ const getDiscussionReply = async(req, res) => {
 
     const discussionReply = await DiscussionReply.find({
         discussionId: id
-    });
+    }).sort({createdAt: -1});;
 
     const userReply = await DiscussionReply.find({
         userid: id
@@ -85,7 +85,7 @@ const deleteReply = async(req, res) => {
     if (user._id !== replyId.userid) {
         res.status(400).json({
             success: false,
-            message: 'Tidak dapat menghapus balasan ini'
+            message: 'Unable to delete this reply'
         })
         return
     }
