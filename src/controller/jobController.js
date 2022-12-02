@@ -98,8 +98,8 @@ const getJobDetail = async(req,res)=>{
 }
 const getJobName= async(req,res)=>{
     const {profession} = req.query;
+    const job = await Job.find();
     if (profession){
-        const job = await Job.find();
         res.json({
             success:true,
             data:job.filter((job)=>job.profession.toLowerCase().includes(profession.toLowerCase()))
@@ -112,6 +112,11 @@ const getJobName= async(req,res)=>{
             address:job.address
             }))
         })  
+    } else {
+        res.json({
+            success: true,
+            data: job
+        })
     }
 }
 const editJob = async (req,res)=>{
