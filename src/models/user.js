@@ -31,6 +31,27 @@ const UserSchema = new mongoose.Schema({
     role:{
         type:String,
     },
+    address:{
+        type:String,
+    },
+    website:{
+        type:String,
+    },
+    employee:{
+        type:String,
+    },
+    employee2:{
+        type:String,
+    },
+    industry:{
+        type:String,
+    },
+    founded:{
+        type:String,
+    },
+    specialities:{
+        type:String,
+    },
     isVerify:{
         type:Boolean,
     },
