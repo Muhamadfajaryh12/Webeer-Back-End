@@ -251,7 +251,14 @@ const getUser = async (req, res) => {
         profesi: userprofile.profesi,
         country: userprofile.country,
         bio: userprofile.bio,
-        image: userprofile.image
+        image: userprofile.image,
+        address:userprofile.address,
+        website:userprofile.website,
+        employee:userprofile.employee,
+        employee2:userprofile.employee2,
+        industry:userprofile.industry,
+        founded:userprofile.founded,
+        specialities:userprofile.specialities,
     })
 
     res.json({
@@ -287,8 +294,6 @@ const editUser = async (req, res) => {
         const updateUserImage = await Discussion.find({
             userid: id
         })
-
-        console.log(updateUserImage)
     }
 
     const {
@@ -298,6 +303,13 @@ const editUser = async (req, res) => {
         profesi,
         bio,
         country,
+        address,
+        website,
+        employee,
+        employee2,
+        industry,
+        founded,
+        specialities,
     } = req.body;
 
     if (user._id !== id) {
@@ -358,6 +370,13 @@ const editUser = async (req, res) => {
                 profesi,
                 bio,
                 country,
+                address,
+                website,
+                employee,
+                employee2,
+                industry,
+                founded,
+                specialities,
                 image: userImg
             }
         }
@@ -401,7 +420,7 @@ const changePassword = async (req,res) =>{
     if(newPassword != confirmPassword){
         return res.status(400).json({
             message:'Sorry, your new passwords dont match, please try again',
-            eror:true,
+            error:true,
         })
     }
     const salt = await bcrypt.genSalt(6);
@@ -419,6 +438,57 @@ const changePassword = async (req,res) =>{
     })
 
 }
+const resetPassword = async (req,res) =>{
+    const {email}= req.body
+    const user = await User.findOne({email:email})
+    if(!user){
+        return res.status(400).json({
+            message:'Your email was not found',
+            error:true,
+        })
+    } 
+    else{
+        const url =`http://localhost:9000/#/resetpassword/${user._id}`
+        const mailOptions ={
+            from:'webeercapstone@gmail.com',
+            to:email,
+            subject:"Reset Password Your Account",
+            html: `<p>Silahkan klik link ini untuk mereset password anda<span> <a href="${url}"><span>Reset Password</span></a></span></p>`
+            }
+            await transporter.sendMail(mailOptions);
+            res.status(200).json({
+                message:'Verification OTP Email send',
+                success:true,
+            
+              })
+        }
+} 
+const newResetPassword = async(req,res)=>{
+    const {id} = req.params
+    const {newPassword,confirmPassword}=req.body;
+    if(newPassword != confirmPassword){
+        return res.status(400).json({
+            message:'Sorry, your new passwords dont match, please try again',
+            error:true,
+        })
+    }
+    else{
+    const salt = await bcrypt.genSalt(6);
+    const hash = await bcrypt.hash(newPassword,salt);
+    const updateUser = await User.findOneAndUpdate({_id:id}, {password:hash})
+    if(!updateUser){
+        res.status(400).json({
+            message:'Password update failed',
+            error:true,
+        })
+    }
+    res.status(200).json({
+        success:true,
+        message:'Password successfully changed',
+    })
+}
+
+}
 module.exports = {
     Register,
     getUser,
@@ -429,5 +499,7 @@ module.exports = {
     editUser,
     uploadImg,
     getUserDetail,
-    changePassword
+    changePassword,
+    resetPassword,
+    newResetPassword,
 }
