@@ -50,7 +50,7 @@ const getDiscussionReply = async(req, res) => {
 
     const discussionReply = await DiscussionReply.find({
         discussionId: id
-    }).sort({createdAt: -1});;
+    }).sort({updatedAt: -1});;
 
     const userReply = await DiscussionReply.find({
         userid: id

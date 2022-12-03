@@ -67,15 +67,15 @@ const createDiscussion = async(req,res) =>{
 const getAllDiscussion = async(req, res) => {
     const { sort, category, search } = req.query;
 
-    let discussions = await Discussion.find().sort({createdAt: -1});
+    let discussions = await Discussion.find().sort({updatedAt: -1});
 
     if(sort !== undefined) {
         if(sort === 'true') {
-            discussions = await Discussion.find().sort({isSolved: -1, createdAt: -1});
+            discussions = await Discussion.find().sort({isSolved: -1, updatedAt: -1});
         } else if(sort === 'false') {
-            discussions = await Discussion.find().sort({isSolved: 1, createdAt: -1});
+            discussions = await Discussion.find().sort({isSolved: 1, updatedAt: -1});
         } else if(sort === 'oldest') {
-            discussions = await Discussion.find().sort({createdAt: 1});
+            discussions = await Discussion.find().sort({updatedAt: 1});
         }
     }
     
@@ -117,7 +117,7 @@ const getDiscussionOtherUser = async(req, res) => {
 
     const discussion = await Discussion.find({
         userid: user
-    }).sort({createdAt: -1});
+    }).sort({updatedAt: -1});
 
     res.json({
         success: true,
@@ -130,7 +130,7 @@ const getUserDiscussion = async(req, res) => {
     
     const discussion = await Discussion.find({
         userid: user._id
-    }).sort({createdAt: -1});
+    }).sort({updatedAt: -1});
 
     res.json({
         success: true,
