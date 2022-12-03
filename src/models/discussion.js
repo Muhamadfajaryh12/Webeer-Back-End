@@ -18,6 +18,9 @@ const DiscussionSchema =new Schema(
             type: String,
             required: true
         },
+        updatedDate: {
+            type: Date
+        },
         title: {
             type: String,
             required: true

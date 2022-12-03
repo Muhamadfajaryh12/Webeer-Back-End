@@ -49,6 +49,7 @@ const createDiscussion = async(req,res) =>{
         username: nameuser.username,
         userimage: nameuser.image,
         date,
+        updatedDate: newDate,
         title,
         categories,
         discussion,
@@ -67,15 +68,15 @@ const createDiscussion = async(req,res) =>{
 const getAllDiscussion = async(req, res) => {
     const { sort, category, search } = req.query;
 
-    let discussions = await Discussion.find().sort({updatedAt: -1});
+    let discussions = await Discussion.find().sort({updatedDate: -1});
 
     if(sort !== undefined) {
         if(sort === 'true') {
-            discussions = await Discussion.find().sort({isSolved: -1, updatedAt: -1});
+            discussions = await Discussion.find().sort({isSolved: -1, updatedDate: -1});
         } else if(sort === 'false') {
-            discussions = await Discussion.find().sort({isSolved: 1, updatedAt: -1});
+            discussions = await Discussion.find().sort({isSolved: 1, updatedDate: -1});
         } else if(sort === 'oldest') {
-            discussions = await Discussion.find().sort({updatedAt: 1});
+            discussions = await Discussion.find().sort({updatedDate: 1});
         }
     }
     
@@ -117,7 +118,7 @@ const getDiscussionOtherUser = async(req, res) => {
 
     const discussion = await Discussion.find({
         userid: user
-    }).sort({updatedAt: -1});
+    }).sort({updatedDate: -1});
 
     res.json({
         success: true,
@@ -130,7 +131,7 @@ const getUserDiscussion = async(req, res) => {
     
     const discussion = await Discussion.find({
         userid: user._id
-    }).sort({updatedAt: -1});
+    }).sort({updatedDate: -1});
 
     res.json({
         success: true,
@@ -223,6 +224,7 @@ const editDiscussion = async(req, res, next) => {
                 categories,
                 discussion,
                 date,
+                updatedDate: newDate,
                 isSolved
             }
         }
