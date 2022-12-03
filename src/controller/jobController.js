@@ -96,6 +96,18 @@ const getJobDetail = async(req,res)=>{
         data: job,
       });
 }
+const getJobOther = async(req, res) => {
+    const company = req.params.id;
+
+    const jobs = await Job.find({
+        companyid: company 
+    }).sort({createdAt: -1});
+
+    res.status(200).json({
+        success: true,
+        data: jobs
+    })
+}
 const getJobName= async(req,res)=>{
     const {profession} = req.query;
     if (profession){
@@ -211,4 +223,5 @@ module.exports = {
     getCompanyJob,
     deleteJob,
     editJob,
+    getJobOther,
 }
