@@ -16,9 +16,9 @@ const createDiscussion = async(req,res) =>{
     const nameuser = await User.findOne({
         _id: user
     })
-    const newDate = new Date();
-    const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-    const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
+    const date = new Date();
+    // const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    // const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
     const reply = [];
     const isSolved = false;
     if(typeof(categories) === 'object') {
@@ -67,15 +67,15 @@ const createDiscussion = async(req,res) =>{
 const getAllDiscussion = async(req, res) => {
     const { sort, category, search } = req.query;
 
-    let discussions = await Discussion.find().sort({createdAt: -1});
+    let discussions = await Discussion.find().sort({date: -1});
 
     if(sort !== undefined) {
         if(sort === 'true') {
-            discussions = await Discussion.find().sort({isSolved: -1, createdAt: -1});
+            discussions = await Discussion.find().sort({isSolved: -1, date: -1});
         } else if(sort === 'false') {
-            discussions = await Discussion.find().sort({isSolved: 1, createdAt: -1});
+            discussions = await Discussion.find().sort({isSolved: 1, date: -1});
         } else if(sort === 'oldest') {
-            discussions = await Discussion.find().sort({createdAt: 1});
+            discussions = await Discussion.find().sort({date: 1});
         }
     }
     
@@ -117,7 +117,7 @@ const getDiscussionOtherUser = async(req, res) => {
 
     const discussion = await Discussion.find({
         userid: user
-    }).sort({createdAt: -1});
+    }).sort({date: -1});
 
     res.json({
         success: true,
@@ -130,7 +130,7 @@ const getUserDiscussion = async(req, res) => {
     
     const discussion = await Discussion.find({
         userid: user._id
-    }).sort({createdAt: -1});
+    }).sort({date: -1});
 
     res.json({
         success: true,
@@ -159,9 +159,9 @@ const editDiscussion = async(req, res, next) => {
         })
         return
     }
-    const newDate = new Date();
-    const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-    const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
+    const date = new Date();
+    // const monthID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    // const date = `${newDate.getDate()} ${monthID[newDate.getMonth()]} ${newDate.getFullYear()}`;
 
     const category = await Category.find({
         discussions: id
