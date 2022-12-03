@@ -65,7 +65,7 @@ const createJob = async(req,res) =>{
       });
 }
 const getJob =async(req,res)=>{
-    const job = await Job.find();
+    const job = await Job.find().sort({updatedAt: -1});
     res.json({
         success: true,
         data:job,
@@ -110,8 +110,8 @@ const getJobOther = async(req, res) => {
 }
 const getJobName= async(req,res)=>{
     const {profession} = req.query;
+    const job = await Job.find().sort({updatedAt: -1});
     if (profession){
-        const job = await Job.find();
         res.json({
             success:true,
             data:job.filter((job)=>job.profession.toLowerCase().includes(profession.toLowerCase()))
@@ -120,10 +120,15 @@ const getJobName= async(req,res)=>{
             company:job.company,
             profession:job.profession,
             image:job.image,
-            createdAt:job.createdAt,
+            updatedAt:job.updatedAt,
             address:job.address
             }))
         })  
+    } else {
+        res.json({
+            success: true,
+            data: job
+        })
     }
 }
 const editJob = async (req,res)=>{
