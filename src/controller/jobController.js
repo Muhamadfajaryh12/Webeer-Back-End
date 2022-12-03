@@ -65,7 +65,7 @@ const createJob = async(req,res) =>{
       });
 }
 const getJob =async(req,res)=>{
-    const job = await Job.find();
+    const job = await Job.find().sort({createdAt: -1});
     res.json({
         success: true,
         data:job,

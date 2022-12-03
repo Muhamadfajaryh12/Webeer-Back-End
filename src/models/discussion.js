@@ -15,11 +15,8 @@ const DiscussionSchema =new Schema(
             ref: 'user'
         },
         date: {
-            type: String,
+            type: Date,
             required: true
-        },
-        updatedDate: {
-            type: Date
         },
         title: {
             type: String,
