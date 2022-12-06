@@ -144,6 +144,7 @@ const VerifikasiOTP = async(req,res)=>{
                 const {expiresAt} =  UserOTPVerifikasi[0];
                 if(expiresAt < Date.now()){
                     await OTPUser.deleteMany({idUser});
+                    await User.deleteMany({_id:idUser})
                     res.status(400).json({
                         error:true,
                         message:"Your OTP code has expired",
