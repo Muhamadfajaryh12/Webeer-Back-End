@@ -92,7 +92,6 @@ const getAllDiscussion = async(req, res) => {
             discussions = discussions.filter((discussion) => discussion.categories.includes(category));
         }
     }
-
     res.json({
         success: true,
         data: discussions,
