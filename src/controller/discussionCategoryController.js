@@ -32,7 +32,7 @@ const createCategory = async (req, res, next) => {
 }
 
 const getAllCategory = async(req, res) => {
-    const discuss = await Category.find();
+    const discuss = await Category.find().sort({name: 1});
     res.json({
         success: true,
         data: discuss,
