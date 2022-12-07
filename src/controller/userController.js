@@ -458,7 +458,7 @@ const resetPassword = async (req,res) =>{
             }
             await transporter.sendMail(mailOptions);
             res.status(200).json({
-                message:'Verification OTP Email send',
+                message:'Please check your email for password reset',
                 success:true,
             
               })
