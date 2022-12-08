@@ -450,11 +450,13 @@ const resetPassword = async (req,res) =>{
     } 
     else{
         const url =`http://localhost:9000/#/resetpassword/${user._id}`
+        const url2 =`https://webeer.netlify.app/#/resetpassword/${user._id}`
+        const url3 =`http://127.0.0.1:8080/#/resetpassword/${user._id}`
         const mailOptions ={
             from:'webeercapstone@gmail.com',
             to:email,
             subject:"Reset Password Your Account",
-            html: `<p>Silahkan klik link ini untuk mereset password anda<span> <a href="${url}"><span>Reset Password</span></a></span></p>`
+            html: `<p>Silahkan klik link ini untuk mereset password anda<span> <a href="${url}"><span>Reset Password 1</span></a></span><span> <a href="${url2}"><span>Reset Password 2</span></a></span><span> <a href="${url3}"><span>Reset Password 3</span></a></span></p>`
             }
             await transporter.sendMail(mailOptions);
             res.status(200).json({
