@@ -435,7 +435,9 @@ const resetPassword = async (req, res) => {
     from: 'webeercapstone@gmail.com',
     to: email,
     subject: 'Reset Password Your Account',
-    html: `<p>Please click this link to reset your password<span> <a href="${url2}"><span>Reset Password Server Main</span></a></span><span> <a href="${url}"><span>Reset Password Server 2</span></a></span><span> <a href="${url3}"><span>Reset Password Server 3</span></a></span></p>`,
+    html: `<p>Please click this link to reset your password<span> <a href="${url2}"><span>Reset Password Server Main</span></a></span><span> <a href="${url}"><span>Reset Password Server 2</span></a></span><span> <a href="${url3}"><span>Reset Password Server 3</span></a></span></p>
+          <p>Make sure this message is safe, if not, please select (seems safe) then refresh.</p>      
+    `,
   };
   await transporter.sendMail(mailOptions);
   res.status(200).json({
